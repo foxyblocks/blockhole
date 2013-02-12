@@ -1,5 +1,6 @@
 require "blockhole/version"
 require 'redis'
+require 'multi_json'
 
 module Blockhole
   class << self
@@ -18,7 +19,7 @@ module Blockhole
 
       unless value = storage.get(hole_name)
         value = block.call(hole_name)
-        storage.set(hole_name, value)
+        storage.set(hole_name, encode(value))
         storage.expire(hole_name, lifespan / 1000) if lifespan
       end
 
@@ -26,7 +27,19 @@ module Blockhole
     end
 
     def get(name)
-      storage.get(name)
+      value = storage.get(name)
+      begin
+        return MultiJson.load value
+      rescue MultiJson::DecodeError
+        return value
+      end
+    end
+
+  private
+
+    def encode(value)
+      return value if value.kind_of? String
+      MultiJson.dump value
     end
   end
 end

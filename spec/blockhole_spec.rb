@@ -12,6 +12,28 @@ describe Blockhole do
     pie.should == 'blueberry pie'
   end
 
+
+  it 'should support blocks that return hash objects' do
+    Blockhole.use_hole('pie-hole') do
+      { 'name' => 'blueberry pie'}
+    end
+
+    pie = Blockhole.get('pie-hole')
+    pie.should be_kind_of Hash
+
+    pie['name'].should == 'blueberry pie'
+  end
+
+  it 'should support blocks that return array objects' do
+    Blockhole.use_hole('pie-hole') do
+      ['blueberry', 'cherry']
+    end
+
+    pies = Blockhole.get('pie-hole')
+    pies.should be_kind_of Array
+    pies[0].should == 'blueberry'
+  end
+
   context 'with an optional lifespan' do
     it 'expires values' do
       Blockhole.use_hole('pie-hole', 10) { 'blueberry pie' }

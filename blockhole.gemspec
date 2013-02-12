@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency "redis", '~> 2.1'
+  gem.add_dependency "multi_json", '~> 1.5'
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency 'bundler', '>= 1.0.7'
