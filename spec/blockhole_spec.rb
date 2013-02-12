@@ -12,7 +12,6 @@ describe Blockhole do
     pie.should == 'blueberry pie'
   end
 
-
   it 'should support blocks that return hash objects' do
     Blockhole.use_hole('pie-hole') do
       { 'name' => 'blueberry pie'}
@@ -50,9 +49,18 @@ describe Blockhole do
   end
 
   describe 'get' do
-    it 'gets the values back out' do
+    it 'gets the values back out again' do
       Blockhole.use_hole('pie-hole') { 'blueberry pie' }
       Blockhole.get('pie-hole').should == 'blueberry pie'
+    end
+  end
+
+  describe 'collapse' do
+    it 'should bust the cache' do
+      Blockhole.use_hole('pie-hole') { 'blueberry' }
+      Blockhole.collapse('pie-hole')
+      Blockhole.use_hole('pie-hole') { 'cherry' }
+      Blockhole.get('pie-hole').should == 'cherry'
     end
   end
 end

@@ -35,6 +35,10 @@ module Blockhole
       end
     end
 
+    def collapse(name)
+      storage.del name
+    end
+
   private
 
     def encode(value)
