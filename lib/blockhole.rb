@@ -5,8 +5,12 @@ module Blockhole
   class << self
     attr_accessor :storage
 
-    def use_hole(hole_name, lifespan = nil, &block)
+    def configure
+      yield self
+      self
+    end
 
+    def use_hole(hole_name, lifespan = nil, &block)
       if lifespan and lifespan < 1
         raise ArgumentError,
           "lifespan (if provided) must be >= 1, got #{lifespan}"
@@ -17,12 +21,12 @@ module Blockhole
         storage.set(hole_name, value)
         storage.expire(hole_name, lifespan / 1000) if lifespan
       end
+
       value
     end
 
-    def configure
-      yield self
-      self
+    def get(name)
+      storage.get(name)
     end
   end
 end

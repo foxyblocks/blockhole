@@ -12,7 +12,6 @@ describe Blockhole do
     pie.should == 'blueberry pie'
   end
 
-
   context 'with an expiration' do
     it 'expires values' do
       Blockhole.use_hole('pie-hole', 10) { 'blueberry pie' }
@@ -25,6 +24,13 @@ describe Blockhole do
       lambda do
         Blockhole.use_hole('pie-hole', -1) { 'blueberry pie' }
       end.should raise_error ArgumentError
+    end
+  end
+
+  describe 'get' do
+    it 'gets the values back out' do
+      Blockhole.use_hole('pie-hole') { 'blueberry pie' }
+      Blockhole.get('pie-hole').should == 'blueberry pie'
     end
   end
 end
