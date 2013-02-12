@@ -6,13 +6,13 @@ describe Blockhole do
     Blockhole::VERSION.should_not be_nil
   end
 
-  it 'caches things' do
+  it 'should cache things' do
     Blockhole.use_hole('pie-hole') { 'blueberry pie' }
     pie = Blockhole.use_hole('pie-hole') { 'cherry pie' }
     pie.should == 'blueberry pie'
   end
 
-  context 'with an expiration' do
+  context 'with an optional lifespan' do
     it 'expires values' do
       Blockhole.use_hole('pie-hole', 10) { 'blueberry pie' }
       sleep(50/1000) #50 milliseconds
@@ -20,7 +20,7 @@ describe Blockhole do
       pie.should == 'cherry pie'
     end
 
-    it 'requires that expiration be greater than 1' do
+    it 'requires that lifespan be 1 or greater' do
       lambda do
         Blockhole.use_hole('pie-hole', -1) { 'blueberry pie' }
       end.should raise_error ArgumentError
