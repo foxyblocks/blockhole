@@ -1,15 +1,17 @@
 # Blockhole (WIP)
 
 Have an expensive block that you need to cache? Maybe an http response from an
-expensive third party service? It currently only supports redis for storage,
-but more options are forthcoming.
+expensive third party service?
 
 Inspired heavily from the interface of [VCR](https://github.com/vcr/vcr)
 Blockhole will suck up the response from the block so it only runs once.
 
     Blockhole.use_hole('pie-hole') do
-      # some expensive operation
+      # some expensive operation that returns some value
     end
+
+It currently only supports redis for storage, but more options are forthcoming.
+
 
 
 ## Installation
@@ -46,8 +48,11 @@ Next record a block by passing the name of the redis key you would like to use.
 
     my_pie = Blockhole.use_hole('pie-hole') do
       # some expensive operation to get pie
-      # probably cherry
+      'cherry pie'
     end
+
+    puts my_pie
+    > 'cherry pie'
 
 Blockhole will check redis cache for that key and return that value if it
 exists (this is called a *cache hit*). If it doesn't find anything it will run
@@ -61,6 +66,21 @@ a get call.
 ### What can be stored
 
 Anything that can be fed into `MultiJson.dump` will work.
+Strings will just be stored and returned as is. Arrays and Hashes will be
+serialized before storage and then reparsed after retreival.
+
+    Blockhole.use_hole('pie-hole') do
+      [
+        { name: 'cherry' },
+        { name: 'peach' }
+      ]
+    end
+
+    pies =  Blockhole.get('pie-hole')
+    puts pies[1][:name]
+
+    > 'peach'
+
 
 ### Expiration
 
