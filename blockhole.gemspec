@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["christian@cswebartisan.com"]
   gem.description   = %q{This is a simple caching library inspired by the api of VCR. Currently Redis is the only storage mechanism supported but there are more forthcoming.}
   gem.summary       = %q{Caches the result of heavy blocks.}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/wordofchristian/blockhole"
   gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($/)

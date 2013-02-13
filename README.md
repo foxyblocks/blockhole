@@ -1,4 +1,4 @@
-# Blockhole (WIP)
+# Blockhole (alpha)
 
 Have an expensive block that you need to cache? Maybe an http response from an
 expensive third party service?
