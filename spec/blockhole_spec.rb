@@ -35,13 +35,13 @@ describe Blockhole do
 
   context 'with an optional lifespan' do
     it 'expires values' do
-      Blockhole.use_hole('pie-hole', 10) { 'blueberry pie' }
-      sleep(50/1000) #50 milliseconds
+      Blockhole.use_hole('pie-hole', 1) { 'blueberry pie' }
+      sleep(2) #50 milliseconds
       pie = Blockhole.use_hole('pie-hole') { 'cherry pie' }
       pie.should == 'cherry pie'
     end
 
-    it 'requires that lifespan be 1 or greater' do
+    it 'requires that lifespan be more than 0' do
       lambda do
         Blockhole.use_hole('pie-hole', -1) { 'blueberry pie' }
       end.should raise_error ArgumentError

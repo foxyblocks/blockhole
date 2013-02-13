@@ -14,13 +14,13 @@ module Blockhole
     def use_hole(hole_name, lifespan = nil, &block)
       if lifespan and lifespan < 1
         raise ArgumentError,
-          "lifespan (if provided) must be >= 1, got #{lifespan}"
+          "lifespan (if provided) must be >= 0, got #{lifespan}"
       end
 
       unless value = storage.get(hole_name)
         value = block.call(hole_name)
         storage.set(hole_name, encode(value))
-        storage.expire(hole_name, lifespan / 1000) if lifespan
+        storage.expire(hole_name, lifespan) if lifespan
       end
 
       value
